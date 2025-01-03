@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
 import VideoPlayer from './Components/videoplayer';
+import Header from './Components/header';
+import Footer from './Components/footer';
 
 function App() {
   const [videoUrl, setVideoUrl] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState(null);
+
   const handleAnalyze = async () => {
     setIsAnalyzing(true);
     // Mock API call
@@ -17,29 +20,32 @@ function App() {
 
   return (
     <div>
-      <h1>Vidlens Video Analyzer</h1>
-      <VideoPlayer url = "https://www.example.com/video.mp4" />
+      <Header/>
+      <div className="hero">
+        <h1>Welcome to Vidlens</h1>
+        <p>Analyze your videos effortlessly with AI technology.</p>
+        <button className="cta-button">Get Started</button>
+      </div>
+
+      <div className="input-container">
+        <input
+          type="file"
+          accept="video/*"
+          onChange={(e) => setVideoUrl(URL.createObjectURL(e.target.files[0]))}
+        />
+        <button onClick={handleAnalyze} disabled={!videoUrl || isAnalyzing}>
+          {isAnalyzing ? "Analyzing..." : "Analyze Video"}
+        </button>
     </div>
+    {/* Video Player Section */}
+    {videoUrl && <VideoPlayer url={videoUrl} />}
+
+{/* Analysis Result */}
+{analysisResult && <div className="result">{analysisResult}</div>}
+<Footer />
+</div>
+
+
   );
 }
-
-return (
-  <div className="app-container">
-    <h1>Vidlens Video Analyzer</h1>
-    <div className="input-container">
-      <input
-        type="text"
-        placeholder="Enter video URL"
-        value={videoUrl}
-        onChange={(e) => setVideoUrl(e.target.value)}
-      />
-      <button onClick={handleAnalyze} disabled={!videoUrl || isAnalyzing}>
-        {isAnalyzing ? "Analyzing..." : "Analyze Video"}
-      </button>
-    </div>
-    {analysisResult && <div className="result">{analysisResult}</div>}
-  </div>
-);
-
-
 export default App;
