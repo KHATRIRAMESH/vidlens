@@ -1,51 +1,32 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AnalyzePage from './pages/analyzePage';
+import LandingPage from './pages/landingPage';
 import './App.css';
-import VideoPlayer from './Components/videoplayer';
+// import VideoPlayer from './Components/videoplayer';
 import Header from './Components/header';
 import Footer from './Components/footer';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 function App() {
-  const [videoUrl, setVideoUrl] = useState('');
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState(null);
-
-  const handleAnalyze = async () => {
-    setIsAnalyzing(true);
-    // Mock API call
-    setTimeout(() => {
-      setAnalysisResult("Analysis complete for: " + videoUrl);
-      setIsAnalyzing(false);
-    }, 2000);
-  };
-
+  
   return (
-    <div>
-      <Header/>
-      <div className="hero">
-        <h1>Welcome to Vidlens</h1>
-        <p>Analyze your videos effortlessly with AI technology.</p>
-        <button className="cta-button">Get Started</button>
-      </div>
+   <Router>
+    <div className='App'>
+      <Header />
+      <Routes>
+        
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/analyze' element={<AnalyzePage />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/contact' element={<Contact />} />
+        
+      </Routes>
 
-      <div className="input-container">
-        <input
-          type="file"
-          accept="video/*"
-          onChange={(e) => setVideoUrl(URL.createObjectURL(e.target.files[0]))}
-        />
-        <button onClick={handleAnalyze} disabled={!videoUrl || isAnalyzing}>
-          {isAnalyzing ? "Analyzing..." : "Analyze Video"}
-        </button>
     </div>
-    {/* Video Player Section */}
-    {videoUrl && <VideoPlayer url={videoUrl} />}
-
-{/* Analysis Result */}
-{analysisResult && <div className="result">{analysisResult}</div>}
-<Footer />
-</div>
-
-
+   </Router>
   );
 }
+
 export default App;
